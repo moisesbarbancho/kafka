@@ -103,3 +103,15 @@ Este proyecto implementa un entorno completo de Apache Kafka con arquitectura di
 - **SalesSummaryApp**: Agregación de ventas por ubicación
 - **SensorAlerterApp**: Alertas basadas en telemetría
 
+
+*******************************************************************************************
+*******************************************************************************************
+
+## Creacion del DataGen sensor-telemetry: 
+1. Definicion en source-datagen-sensor-telemetry
+2. Schema en sensor-telemtry.avsc
+
+## Alarma: 
+
+He creado con exito la alarma que nos informa cuando la temperatura sea superior a 35grados o la humedad por debajo de 20%. 
+
