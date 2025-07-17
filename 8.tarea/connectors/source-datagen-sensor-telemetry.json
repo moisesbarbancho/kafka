@@ -1,12 +1,12 @@
 {
-  "name": "source-datagen-sensor-telemetry",
+  "name": "source-datagen-sensor-fixed",
   "config": {
     "connector.class": "io.confluent.kafka.connect.datagen.DatagenConnector",
     "key.converter": "org.apache.kafka.connect.storage.StringConverter",
     "value.converter": "io.confluent.connect.avro.AvroConverter",
     "value.converter.schema.registry.url": "http://schema-registry:8081",
-    "kafka.topic": "sensor-telemetry",
-    "schema.filename": "/home/appuser/sensor-telemetry.avsc",
+    "kafka.topic": "sensor-telemetry-fixed",
+    "schema.string": "{\"namespace\":\"com.farmia.iot\",\"name\":\"SensorTelemetry\",\"type\":\"record\",\"fields\":[{\"name\":\"sensor_id\",\"type\":{\"type\":\"string\",\"arg.properties\":{\"options\":[\"sensor_001\",\"sensor_002\",\"sensor_003\",\"sensor_004\",\"sensor_005\"]}}},{\"name\":\"timestamp\",\"type\":\"long\"},{\"name\":\"temperature\",\"type\":{\"type\":\"double\",\"arg.properties\":{\"range\":{\"min\":0.0,\"max\":50.0}}}},{\"name\":\"humidity\",\"type\":{\"type\":\"double\",\"arg.properties\":{\"range\":{\"min\":0.0,\"max\":100.0}}}},{\"name\":\"soil_fertility\",\"type\":{\"type\":\"double\",\"arg.properties\":{\"range\":{\"min\":0.0,\"max\":100.0}}}}]}",
     "schema.keyfield": "sensor_id",
     "max.interval": 1000,
     "iterations": 10000000,

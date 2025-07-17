@@ -19,7 +19,12 @@
     {
       "name": "timestamp",
       "type": "long",
-      "logicalType": "timestamp-millis"
+      "arg.properties": {
+        "range": {
+          "min": 1640995200000,
+          "max": 1893456000000
+        }
+      }
     },
     {
       "name": "temperature",
