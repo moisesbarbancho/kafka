@@ -276,6 +276,8 @@ services:
     image: mysql:8.3
     hostname: mysql
     container_name: mysql
+    ports:
+      - "3306:3306"
     volumes:
       - $PWD/mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
     environment:
@@ -284,3 +286,18 @@ services:
       MYSQL_USER: user
       MYSQL_PASSWORD: password
       MYSQL_ROOT_HOST: 172.%
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    hostname: phpmyadmin
+    container_name: phpmyadmin
+    depends_on:
+      - mysql
+    ports:
+      - "8080:80"
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+      PMA_USER: root
+      PMA_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: password
