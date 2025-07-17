@@ -115,3 +115,11 @@ Este proyecto implementa un entorno completo de Apache Kafka con arquitectura di
 
 He creado con exito la alarma que nos informa cuando la temperatura sea superior a 35grados o la humedad por debajo de 20%. 
 
+![til](./assets/KSQLDB-flow.png)
+![til](./assets/KSQLDB-streams.png)
+![til](./assets/Topic-sensor-alerts.png)
+![til](./assets/Topic-sensor-alerts-details.png)
+
+El codigo de alarma Ksql esta en el archivo: sensor-telemetry-alarm.sql
+
+
