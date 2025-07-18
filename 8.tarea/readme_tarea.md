@@ -147,4 +147,13 @@ Se ha implementado exitosamente el conector **source-mysql-transactions** que:
 ### 🔄 Próximo Paso
 Crear agregación en ksqlDB para sumarizar ventas por categoría y minuto, publicando al topic `sales-summary`.
 
+Para realizar esto, primero hemos creado una stream "sales_source_stream, para leer datos del topic sales_transactions, despues la tabla: sales_summary_by_group donde se realiza la salida agrupacion por categorias de productos y total vendido y total ingresado. Después se publica el resultado en el topic: sales-summary.
+
+
+![til](./assets/topic-sales_transactions.png)
+![til](./assets/ksqldb-stream-transactions.png)
+![til](./assets/ksqldb-stream-table.png)
+![til](./assets/ksqldb-stream-flow.png)
+![til](./assets/ksqldb-stream-flow2.png)
+![til](./assets/topic-sales-summary.png)
 
