@@ -122,4 +122,29 @@ He creado con exito la alarma que nos informa cuando la temperatura sea superior
 
 El codigo de alarma Ksql esta en el archivo: sensor-telemetry-alarm.sql
 
+## Conector MySQL Source - Transacciones de Ventas
+
+Se ha implementado exitosamente el conector **source-mysql-transactions** que:
+
+### ✅ Estado del Sistema
+- **Conector**: ✅ RUNNING (modo bulk)
+- **Autenticación**: ✅ mysql_native_password configurado
+- **Topic destino**: `sales_transactions`
+- **Registros procesados**: 803 transacciones sincronizadas
+
+### 📊 Flujo de Datos Verificado
+1. **DataGen** → `_datagen_transactions` topic
+2. **MySQL Sink** → tabla `sales_transactions` (803 registros)
+3. **MySQL Source** → topic `sales_transactions` (803 mensajes)
+4. **Formato**: Avro con keys (transaction_id)
+
+### 🎯 Datos Distribuidos
+- **Categorías**: 6 (equipment, fertilizers, pesticides, seeds, soil, supplies)
+- **Rango temporal**: 2025-07-17 07:34:30 → 07:41:53
+- **Distribución**: ~100 transacciones por minuto
+- **Sin lag**: Sincronización perfecta MySQL ↔ Kafka
+
+### 🔄 Próximo Paso
+Crear agregación en ksqlDB para sumarizar ventas por categoría y minuto, publicando al topic `sales-summary`.
+
 
