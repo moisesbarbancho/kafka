@@ -1,0 +1,18 @@
+{
+  "name": "jdbc-source-sales-transactions",
+  "config": {
+    "connector.class": "io.confluent.connect.jdbc.JdbcSourceConnector",
+    "key.converter": "org.apache.kafka.connect.storage.StringConverter",
+    "value.converter": "io.confluent.connect.avro.AvroConverter",
+    "value.converter.schema.registry.url": "http://schema-registry:8081",
+    "connection.url": "jdbc:mysql://mysql:3306/db",
+    "connection.user": "root",
+    "connection.password": "password",
+    "kafka.topic": "sales-transactions",
+    "mode": "incrementing",
+    "incrementing.column.name": "transaction_id",
+    "table.whitelist": "sales_transactions",
+    "poll.interval.ms": 5000,
+    "tasks.max": "1"
+  }
+}
