@@ -1,18 +1,23 @@
 {
-  "name": "jdbc-source-sales-transactions",
+  "name": "source-mysql-transactions",
   "config": {
     "connector.class": "io.confluent.connect.jdbc.JdbcSourceConnector",
     "key.converter": "org.apache.kafka.connect.storage.StringConverter",
     "value.converter": "io.confluent.connect.avro.AvroConverter",
     "value.converter.schema.registry.url": "http://schema-registry:8081",
-    "connection.url": "jdbc:mysql://mysql:3306/db",
+    "connection.url": "jdbc:mysql://mysql:3306/db?user=root&password=password&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC",
     "connection.user": "root",
     "connection.password": "password",
-    "kafka.topic": "sales-transactions",
-    "mode": "incrementing",
-    "incrementing.column.name": "transaction_id",
+    "kafka.topic": "mysql-transactions",
+    "mode": "timestamp",
+    "timestamp.column.name": "timestamp",
     "table.whitelist": "sales_transactions",
     "poll.interval.ms": 5000,
-    "tasks.max": "1"
+    "tasks.max": "1",
+    "transforms": "createKey,extractField",
+    "transforms.createKey.type": "org.apache.kafka.connect.transforms.ValueToKey",
+    "transforms.createKey.fields": "transaction_id",
+    "transforms.extractField.type": "org.apache.kafka.connect.transforms.ExtractField$Key",
+    "transforms.extractField.field": "transaction_id"
   }
 }
