@@ -2,15 +2,15 @@
 
 ## Descripción del Entorno
 
-Este proyecto implementa un entorno completo de Apache Kafka con arquitectura distribuida usando **Confluent Platform 7.8.0**. El sistema está diseñado para el procesamiento de datos en tiempo real de FarmIA, incluyendo telemetría de sensores y transacciones de ventas.
+ El sistema está diseñado para el procesamiento de datos en tiempo real de FarmIA, incluyendo telemetría de sensores y transacciones de ventas.
 
-## Arquitectura del Sistema Kafka
+## Arquitectura del Sistema Kafka as-is: 
 
-### 📐 Componentes Principales
+### Componentes Principales
 
 ```
 ┌─────────────────────────────────────────────────────┐
-│                           KAFKA CLUSTER             │
+│                    KAFKA CLUSTER                    │
 │                                                     │
 │  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐  │
 │  │Controller-1 │  │Controller-2 │  │Controller-3 │  │
@@ -25,7 +25,7 @@ Este proyecto implementa un entorno completo de Apache Kafka con arquitectura di
                                   │
                                   ▼
 ┌───────────────────────────────────────────────────────────┐
-│                        CONFLUENT ECOSYSTEM                │
+│                   CONFLUENT ECOSYSTEM                     │
 │                                                           │
 │  ┌────────────────┐  ┌──────────────┐  ┌──────────────┐   │
 │  │Schema Registry │  │Kafka Connect │  │ KsqlDB Server│   │
@@ -40,18 +40,28 @@ Este proyecto implementa un entorno completo de Apache Kafka con arquitectura di
                                   │
                                   ▼
 ┌─────────────────────────────────────────┐
-│                          DATA STORAGE   │
+│               DATA STORAGE              │
 │                                         │
 │  ┌──────────────┐  ┌──────────────┐     │
 │  │    MySQL     │  │  phpMyAdmin  │     │
 │  │    :3306     │  │    :8080     │     │
 │  └──────────────┘  └──────────────┘     │
 └─────────────────────────────────────────┘
+
+
+┌────────────────────────┐
+│      DATA LAYER        │
+│                        │
+│  ┌──────────────┐      │
+│  │    DataGen   |      |
+|  |   Connector  |      │
+│  └──────────────┘      │
+└────────────────────────┘
 ```
 
-### 🏗️ Detalles de Arquitectura
+### Detalles de Arquitectura
 
-#### **Kafka Cluster (KRaft Mode)**
+
 - **Controllers**: 3 nodos dedicados para metadatos y coordinación
   - Quorum distribuido para alta disponibilidad
   - Cluster ID: `Nk018hRAQFytWskYqtQduw`
@@ -69,7 +79,7 @@ Este proyecto implementa un entorno completo de Apache Kafka con arquitectura di
 - **MySQL 8.3**: Base de datos transaccional
 - **phpMyAdmin**: Interfaz web para administración
 
-## 🔗 Enlaces de Servicios
+## Enlaces de Servicios
 
 ### Servicios Web
 - **Confluent Control Center**: [http://localhost:9021](http://localhost:9021)
@@ -89,7 +99,7 @@ Este proyecto implementa un entorno completo de Apache Kafka con arquitectura di
   - Base de datos: `db`
   - Usuario aplicación: `user` / Password: `password`
 
-## 🚀 Flujo de Datos
+## Flujo de Datos
 
 ### Conectores Implementados
 1. **source-datagen-_transactions**: Genera transacciones sintéticas
@@ -124,31 +134,11 @@ El codigo de alarma Ksql esta en el archivo: sensor-telemetry-alarm.sql
 
 ## Conector MySQL Source - Transacciones de Ventas
 
-Se ha implementado exitosamente el conector **source-mysql-transactions** que:
+Se ha implementado exitosamente el conector **source-mysql-transactions** que lee de la base de datos y publica en el topic sensor_transactions. Para poder crear el stream Sales-source-stram que más tarde publicará la sumarización de las ventas en el topic sales-summary.
 
-### ✅ Estado del Sistema
-- **Conector**: ✅ RUNNING (modo bulk)
-- **Autenticación**: ✅ mysql_native_password configurado
-- **Topic destino**: `sales_transactions`
-- **Registros procesados**: 803 transacciones sincronizadas
-
-### 📊 Flujo de Datos Verificado
-1. **DataGen** → `_datagen_transactions` topic
-2. **MySQL Sink** → tabla `sales_transactions` (803 registros)
-3. **MySQL Source** → topic `sales_transactions` (803 mensajes)
-4. **Formato**: Avro con keys (transaction_id)
-
-### 🎯 Datos Distribuidos
-- **Categorías**: 6 (equipment, fertilizers, pesticides, seeds, soil, supplies)
-- **Rango temporal**: 2025-07-17 07:34:30 → 07:41:53
-- **Distribución**: ~100 transacciones por minuto
-- **Sin lag**: Sincronización perfecta MySQL ↔ Kafka
-
-### 🔄 Próximo Paso
-Crear agregación en ksqlDB para sumarizar ventas por categoría y minuto, publicando al topic `sales-summary`.
+## Summarizacion de ventas por minuto
 
 Para realizar esto, primero hemos creado una stream "sales_source_stream, para leer datos del topic sales_transactions, despues la tabla: sales_summary_by_group donde se realiza la salida agrupacion por categorias de productos y total vendido y total ingresado. Después se publica el resultado en el topic: sales-summary.
-
 
 ![til](./assets/topic-sales_transactions.png)
 ![til](./assets/ksqldb-stream-transactions.png)
