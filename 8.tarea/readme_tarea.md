@@ -140,6 +140,8 @@ Se ha implementado exitosamente el conector **source-mysql-transactions** que le
 
 Para realizar esto, primero hemos creado una stream "sales_source_stream, para leer datos del topic sales_transactions, despues la tabla: sales_summary_by_group donde se realiza la salida agrupacion por categorias de productos y total vendido y total ingresado. Después se publica el resultado en el topic: sales-summary.
 
+La definición tanto del stream como de la tabla está recogida en el archivo sales-summary.sql
+
 ![til](./assets/topic-sales_transactions.png)
 ![til](./assets/ksqldb-stream-transactions.png)
 ![til](./assets/ksqldb-stream-table.png)
